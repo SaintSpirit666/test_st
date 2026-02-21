@@ -2,533 +2,160 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 ПОЖАРНАЯ БЕЗОПАСНОСТЬ: СПЕЦИАЛИСТ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🔥 ПОЖАРНАЯ БЕЗОПАСНОСТЬ</title>
 <style>
-* {
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-}
-body {
-  background: #1a2634;
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px;
-}
-.game-container {
-  max-width: 1000px;
-  width: 100%;
-  background: #0f1922;
-  border-radius: 40px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-  overflow: hidden;
-  border: 2px solid #ff7b24;
-}
-.header-panel {
-  background: #0b1a24;
-  padding: 20px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 3px solid #ff7b24;
-  color: white;
-}
-.title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  background: linear-gradient(135deg, #ff9f4b, #ff6a00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.health {
-  display: flex;
-  gap: 10px;
-  font-size: 2rem;
-}
-.heart {
-  text-shadow: 0 0 8px #ff0000;
-  transition: all 0.3s;
-  display: inline-block;
-}
-.heart.broken {
-  animation: heartBreak 0.6s ease-out;
-}
-@keyframes heartBreak {
-  0% { transform: scale(1) rotate(0deg); opacity: 1; }
-  25% { transform: scale(1.2) rotate(-10deg); }
-  50% { transform: scale(0.9) rotate(10deg); filter: brightness(2) sepia(1) hue-rotate(-50deg) saturate(3); }
-  75% { transform: scale(0.8) rotate(-5deg) translateY(10px); }
-  100% { transform: scale(0) rotate(0deg); opacity: 0; filter: grayscale(1); }
-}
-.hint-counter {
-  background: #2a3f54;
-  padding: 8px 16px;
-  border-radius: 50px;
-  font-weight: 600;
-  color: #ffd966;
-  border: 1px solid #f39c12;
-}
-.combo-display {
-  background: linear-gradient(135deg, #ff6a00, #ff3a3a);
-  padding: 8px 20px;
-  border-radius: 50px;
-  font-weight: 700;
-  color: white;
-  font-size: 1.1rem;
-  animation: pulse 0.5s ease-in-out;
-}
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-}
-.slide {
-  background: #16222e;
-  padding: 30px;
-  color: #eef2f5;
-  min-height: 500px;
-}
-.progress-wrapper {
-  padding: 15px 30px;
-  background: #0b1a24;
-  border-bottom: 2px solid #ff7b24;
-}
-.progress-bar {
-  height: 20px;
-  background: #2a3f54;
-  border-radius: 10px;
-  position: relative;
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #ff9f4b, #ff6a00, #ff3a3a);
-  width: 0%;
-  transition: width 0.4s ease;
-  border-radius: 10px;
-}
-.flame-icon {
-  position: absolute;
-  right: -10px;
-  top: -5px;
-  font-size: 1.5rem;
-  animation: flicker 0.3s infinite alternate;
-}
-@keyframes flicker {
-  from { opacity: 0.8; transform: scale(1); }
-  to { opacity: 1; transform: scale(1.2); }
-}
-.progress-text {
-  text-align: center;
-  color: #bdd3e8;
-  font-size: 0.9rem;
-  margin-top: 8px;
-}
-.slide-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  color: #bdd3e8;
-}
-.question-counter {
-  background: #253544;
-  padding: 6px 18px;
-  border-radius: 30px;
-}
-.difficulty-badge {
-  background: linear-gradient(135deg, #9b59b6, #8e44ad);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-.test-question {
-  font-size: 1.4rem;
-  margin-bottom: 30px;
-  font-weight: 500;
-  border-left: 5px solid #ff7b24;
-  padding-left: 20px;
-}
-.options {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 25px;
-}
-.option-item {
-  background: #1e2f3c;
-  border-radius: 60px;
-  padding: 14px 22px;
-  border: 2px solid #3d5466;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 1.05rem;
-}
-.option-item:hover {
-  background: #2c4050;
-  border-color: #ff9f4b;
-}
-.option-item.selected {
-  background: #3d5a73;
-  border-color: #2ecc71;
-}
-.option-item.correct {
-  background: #1a472a;
-  border-color: #2ecc71;
-  animation: correctFlash 0.6s ease-in-out;
-}
-.option-item.wrong {
-  background: #4a1a1a;
-  border-color: #ff3a3a;
-  animation: shake 0.5s;
-}
-@keyframes correctFlash {
-  0%, 100% { box-shadow: 0 0 10px #2ecc71; }
-  50% { box-shadow: 0 0 30px #2ecc71, 0 0 50px #2ecc71; }
-}
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px) rotate(-5deg); }
-  75% { transform: translateX(5px) rotate(5deg); }
-}
-input[type="radio"], input[type="checkbox"] {
-  transform: scale(1.2);
-  margin-right: 15px;
-  accent-color: #ff7b24;
-}
-.nav-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 35px;
-}
-.btn {
-  background: #ff7b24;
-  border: none;
-  color: white;
-  font-weight: 700;
-  padding: 14px 35px;
-  border-radius: 60px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: 0.15s;
-  border: 2px solid transparent;
-  box-shadow: 0 5px 0 #b24f10;
-}
-.btn:active {
-  transform: translateY(4px);
-  box-shadow: 0 1px 0 #b24f10;
-}
-.btn:disabled {
-  background: #5f6a75;
-  box-shadow: 0 5px 0 #3a424b;
-  pointer-events: none;
-  opacity: 0.5;
-}
-.btn.secondary {
-  background: #34495e;
-  box-shadow: 0 5px 0 #1f2f3a;
-}
-.btn.start-btn {
-  background: linear-gradient(135deg, #ff9f4b, #ff6a00);
-  font-size: 1.3rem;
-  padding: 18px 50px;
-  box-shadow: 0 8px 0 #b24f10, 0 0 30px rgba(255, 123, 36, 0.5);
-  animation: glow 2s infinite;
-}
-@keyframes glow {
-  0%, 100% { box-shadow: 0 8px 0 #b24f10, 0 0 30px rgba(255, 123, 36, 0.5); }
-  50% { box-shadow: 0 8px 0 #b24f10, 0 0 50px rgba(255, 123, 36, 0.8); }
-}
-.hint-box {
-  background: #1e3a4a;
-  border-radius: 30px;
-  padding: 15px 25px;
-  margin: 20px 0;
-  border-left: 10px solid #f1c40f;
-  color: #ffecb3;
-}
-.exercise-panel {
-  background: #1c2d39;
-  border-radius: 30px;
-  padding: 25px;
-  margin: 20px 0;
-}
-.exercise-input {
-  width: 100%;
-  padding: 15px 25px;
-  border-radius: 60px;
-  border: none;
-  background: #273b48;
-  color: white;
-  font-size: 1.1rem;
-  border: 2px solid #3f637b;
-  margin: 15px 0;
-}
-.exercise-feedback {
-  background: #0b3940;
-  border-radius: 30px;
-  padding: 15px;
-  color: #9fd9b2;
-  margin-top: 15px;
-}
-.final-score {
-  font-size: 2.5rem;
-  text-align: center;
-  padding: 40px;
-}
-.achievements-panel {
-  background: #1c2d39;
-  border-radius: 30px;
-  padding: 20px;
-  margin: 20px 0;
-}
-.achievement-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 10px 15px;
-  background: #2a3f54;
-  border-radius: 20px;
-  margin: 10px 0;
-  opacity: 0.5;
-  transition: all 0.3s;
-}
-.achievement-item.unlocked {
-  opacity: 1;
-  background: linear-gradient(135deg, #2a3f54, #3d5a73);
-  border: 2px solid #ffd966;
-  animation: unlockAnim 0.5s ease-out;
-}
-@keyframes unlockAnim {
-  0% { transform: scale(0.9); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-.achievement-icon {
-  font-size: 2rem;
-}
-.achievement-name {
-  font-weight: 600;
-  color: #eef2f5;
-}
-.floating-text {
-  position: fixed;
-  color: white;
-  padding: 12px 25px;
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 1.2rem;
-  animation: floatUp 1.5s ease-out forwards;
-  z-index: 1000;
-  pointer-events: none;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-}
-@keyframes floatUp {
-  0% { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(-50px) scale(1.2); }
-}
-/* PROLOGUE STYLES */
-.prologue-screen {
-  background: linear-gradient(135deg, #0f1922, #1a2634);
-  padding: 40px;
-  text-align: center;
-}
-.prologue-title {
-  font-size: 2.5rem;
-  background: linear-gradient(135deg, #ff9f4b, #ff6a00, #ff3a3a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 20px;
-  animation: titleGlow 2s infinite;
-}
-@keyframes titleGlow {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.3); }
-}
-.prologue-text {
-  font-size: 1.2rem;
-  line-height: 1.8;
-  color: #bdd3e8;
-  max-width: 700px;
-  margin: 0 auto 30px;
-}
-.prologue-role {
-  background: linear-gradient(135deg, #2a3f54, #3d5a73);
-  padding: 20px 40px;
-  border-radius: 30px;
-  margin: 20px auto;
-  max-width: 600px;
-  border: 2px solid #ff7b24;
-}
-.prologue-role h3 {
-  color: #ff9f4b;
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-.mechanics-list {
-  text-align: left;
-  background: #1c2d39;
-  padding: 25px 35px;
-  border-radius: 30px;
-  margin: 20px auto;
-  max-width: 700px;
-}
-.mechanics-list li {
-  margin: 12px 0;
-  font-size: 1.1rem;
-  color: #eef2f5;
-}
-.mechanics-list li::before {
-  content: "🔥 ";
-}
-/* WHEEL OF FORTUNE */
-.wheel-container {
-  position: relative;
-  width: 400px;
-  height: 400px;
-  margin: 30px auto;
-}
-.wheel {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 10px solid #ff7b24;
-  position: relative;
-  transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
-  box-shadow: 0 0 50px rgba(255, 123, 36, 0.6), inset 0 0 50px rgba(0,0,0,0.3);
-  overflow: hidden;
-}
-.wheel-pointer {
-  position: absolute;
-  top: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, #ff3a3a, #c0392b);
-  clip-path: polygon(50% 100%, 0 0, 100% 0);
-  z-index: 100;
-  filter: drop-shadow(0 0 10px #ff3a3a);
-}
-.wheel-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 70px;
-  height: 70px;
-  background: linear-gradient(135deg, #ff9f4b, #ff6a00);
-  border-radius: 50%;
-  border: 5px solid #fff;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  box-shadow: 0 0 30px rgba(255, 123, 36, 0.8);
-}
-.wheel-result {
-  font-size: 3rem;
-  font-weight: 700;
-  text-align: center;
-  margin: 20px 0;
-  animation: resultPop 0.5s ease-out;
-}
-@keyframes resultPop {
-  0% { transform: scale(0); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
-.wheel-legend {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin: 20px 0;
-  flex-wrap: wrap;
-}
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 15px;
-  background: #1c2d39;
-  border-radius: 20px;
-  font-weight: 600;
-}
-.legend-color {
-  width: 25px;
-  height: 25px;
-  border-radius: 5px;
-  border: 2px solid #fff;
-}
-.hidden {
-  display: none;
-}
-.heal-notification {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
-  color: white;
-  padding: 30px 50px;
-  border-radius: 30px;
-  font-size: 1.8rem;
-  font-weight: 700;
-  animation: healPulse 1s ease-out forwards;
-  z-index: 2000;
-  box-shadow: 0 0 50px rgba(46, 204, 113, 0.8);
-}
-@keyframes healPulse {
-  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+* { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+body { background: #1a2634; margin: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 8px; }
+.game-container { max-width: 100%; width: 100%; background: #0f1922; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; border: 2px solid #ff7b24; max-height: 100vh; display: flex; flex-direction: column; }
+
+/* HEADER */
+.header-panel { background: #0b1a24; padding: 10px 12px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; border-bottom: 2px solid #ff7b24; color: white; gap: 8px; }
+.title { font-size: 0.9rem; font-weight: 700; background: linear-gradient(135deg, #ff9f4b, #ff6a00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.health { display: flex; gap: 4px; font-size: 1.3rem; }
+.heart { text-shadow: 0 0 5px #ff0000; transition: 0.3s; }
+.heart.broken { animation: heartBreak 0.5s; }
+@keyframes heartBreak { 0% { transform: scale(1); } 100% { transform: scale(0); opacity: 0; } }
+.hint-counter { background: #2a3f54; padding: 4px 10px; border-radius: 15px; font-weight: 600; color: #ffd966; font-size: 0.8rem; }
+.combo-display { background: linear-gradient(135deg, #ff6a00, #ff3a3a); padding: 4px 10px; border-radius: 15px; font-weight: 700; color: white; font-size: 0.8rem; }
+
+/* PROGRESS */
+.progress-wrapper { padding: 8px 12px; background: #0b1a24; border-bottom: 2px solid #ff7b24; }
+.progress-bar { height: 10px; background: #2a3f54; border-radius: 5px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #ff9f4b, #ff6a00); width: 0%; transition: 0.4s; border-radius: 5px; }
+.progress-text { text-align: center; color: #bdd3e8; font-size: 0.75rem; margin-top: 4px; }
+
+/* SLIDE */
+.slide { background: #16222e; padding: 12px; color: #eef2f5; flex: 1; overflow-y: auto; min-height: 350px; }
+.slide-header { display: flex; justify-content: space-between; margin-bottom: 12px; color: #bdd3e8; flex-wrap: wrap; gap: 6px; }
+.question-counter { background: #253544; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; }
+.difficulty-badge { background: linear-gradient(135deg, #9b59b6, #8e44ad); padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 700; }
+.test-question { font-size: 1rem; margin-bottom: 15px; font-weight: 500; border-left: 3px solid #ff7b24; padding-left: 10px; line-height: 1.4; }
+.options { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.option-item { background: #1e2f3c; border-radius: 25px; padding: 10px 14px; border: 2px solid #3d5466; cursor: pointer; transition: 0.2s; font-size: 0.9rem; display: flex; align-items: center; min-height: 40px; }
+.option-item:hover { background: #2c4050; border-color: #ff9f4b; }
+.option-item.selected { background: #3d5a73; border-color: #2ecc71; }
+input[type="radio"], input[type="checkbox"] { transform: scale(1.1); margin-right: 10px; accent-color: #ff7b24; min-width: 18px; min-height: 18px; }
+
+/* BUTTONS */
+.nav-buttons { display: flex; justify-content: space-between; margin-top: 15px; gap: 8px; flex-wrap: wrap; }
+.nav-buttons .btn { flex: 1; min-width: 90px; }
+.btn { background: #ff7b24; border: none; color: white; font-weight: 700; padding: 10px 16px; border-radius: 25px; font-size: 0.9rem; cursor: pointer; transition: 0.15s; box-shadow: 0 3px 0 #b24f10; text-align: center; }
+.btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #b24f10; }
+.btn:disabled { background: #5f6a75; pointer-events: none; opacity: 0.5; }
+.btn.secondary { background: #34495e; box-shadow: 0 3px 0 #1f2f3a; }
+.btn.start-btn { background: linear-gradient(135deg, #ff9f4b, #ff6a00); font-size: 1rem; padding: 12px 30px; box-shadow: 0 5px 0 #b24f10; width: 100%; }
+.hint-box { background: #1e3a4a; border-radius: 15px; padding: 10px 14px; margin: 12px 0; border-left: 5px solid #f1c40f; color: #ffecb3; font-size: 0.85rem; }
+
+/* EXERCISE */
+.exercise-panel { background: #1c2d39; border-radius: 15px; padding: 12px; margin: 12px 0; }
+.exercise-panel h3 { font-size: 1rem; margin: 0 0 8px 0; color: #ff9f4b; }
+.exercise-panel p { font-size: 0.9rem; line-height: 1.4; margin: 0 0 10px 0; }
+.exercise-input { width: 100%; padding: 10px 14px; border-radius: 25px; border: none; background: #273b48; color: white; font-size: 0.95rem; border: 2px solid #3f637b; margin: 8px 0; }
+.exercise-feedback { background: #0b3940; border-radius: 15px; padding: 10px; color: #9fd9b2; margin-top: 8px; font-size: 0.85rem; }
+
+/* FINAL */
+.final-score { font-size: 1.5rem; text-align: center; padding: 15px; }
+.final-score h2 { font-size: 1.3rem; margin: 0 0 15px 0; }
+.achievements-panel { background: #1c2d39; border-radius: 15px; padding: 12px; margin: 12px 0; }
+.achievements-panel h3 { color: #ffd966; margin: 0 0 10px 0; font-size: 1rem; }
+.achievement-item { display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #2a3f54; border-radius: 12px; margin: 6px 0; opacity: 0.5; font-size: 0.85rem; }
+.achievement-item.unlocked { opacity: 1; border: 2px solid #ffd966; }
+.achievement-icon { font-size: 1.3rem; }
+
+/* PROLOGUE */
+.prologue-screen { background: linear-gradient(135deg, #0f1922, #1a2634); padding: 15px; text-align: center; overflow-y: auto; }
+.prologue-title { font-size: 1.4rem; background: linear-gradient(135deg, #ff9f4b, #ff6a00, #ff3a3a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; line-height: 1.3; }
+.prologue-text { font-size: 0.95rem; line-height: 1.5; color: #bdd3e8; margin: 12px auto; }
+.prologue-role { background: linear-gradient(135deg, #2a3f54, #3d5a73); padding: 12px 20px; border-radius: 15px; margin: 12px auto; border: 2px solid #ff7b24; }
+.prologue-role h3 { color: #ff9f4b; font-size: 1.1rem; margin: 0 0 6px 0; }
+.prologue-role p { margin: 0; font-size: 1rem; }
+.mechanics-list { text-align: left; background: #1c2d39; padding: 12px 16px; border-radius: 15px; margin: 12px auto; list-style: none; padding-left: 0; }
+.mechanics-list li { margin: 8px 0; font-size: 0.9rem; color: #eef2f5; line-height: 1.3; }
+.mechanics-list li::before { content: "🔥 "; }
+.mechanics-list h3 { color: #ff9f4b; margin: 0 0 10px 0; font-size: 1rem; }
+
+/* WHEEL - ГЛАВНОЕ ИСПРАВЛЕНИЕ */
+#wheelScreen { overflow-y: auto; max-height: 100vh; padding-bottom: 20px; }
+.wheel-container { position: relative; width: 200px; height: 200px; margin: 10px auto; }
+.wheel { width: 100%; height: 100%; border-radius: 50%; border: 6px solid #ff7b24; position: relative; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); box-shadow: 0 0 20px rgba(255,123,36,0.5); }
+.wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 24px solid #ff3a3a; z-index: 10; }
+.wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: linear-gradient(135deg, #ff9f4b, #ff6a00); border-radius: 50%; border: 2px solid #fff; z-index: 5; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+.wheel-result { font-size: 1.5rem; font-weight: 700; text-align: center; margin: 10px 0; }
+.wheel-legend { display: flex; justify-content: center; gap: 5px; margin: 10px 0; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 4px; padding: 4px 8px; background: #1c2d39; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+.legend-color { width: 15px; height: 15px; border-radius: 3px; border: 1px solid #fff; }
+
+/* UTILS */
+.hidden { display: none !important; }
+.floating-text { position: fixed; color: white; padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; animation: floatUp 1.5s forwards; z-index: 1000; pointer-events: none; text-align: center; left: 50%; transform: translateX(-50%); top: 10%; }
+@keyframes floatUp { 0% { opacity: 1; } 100% { opacity: 0; transform: translateX(-50%) translateY(-30px); } }
+.heal-notification { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; padding: 15px 25px; border-radius: 20px; font-size: 1.1rem; font-weight: 700; animation: healPulse 1s forwards; z-index: 2000; text-align: center; }
+@keyframes healPulse { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+
+/* MOBILE - КРИТИЧЕСКИЕ ИСПРАВЛЕНИЯ */
+@media (max-width: 480px) {
+  body { padding: 5px; }
+  .game-container { border-radius: 12px; }
+  .slide { padding: 10px; min-height: 300px; }
+  .test-question { font-size: 0.95rem; }
+  .option-item { font-size: 0.85rem; padding: 9px 12px; }
+  .btn { padding: 9px 14px; font-size: 0.85rem; }
+  .btn.start-btn { font-size: 0.95rem; padding: 11px 25px; }
+  .wheel-container { width: 180px; height: 180px; }
+  .prologue-title { font-size: 1.2rem; }
+  .prologue-text { font-size: 0.9rem; }
+  .mechanics-list li { font-size: 0.85rem; }
+  .nav-buttons { flex-direction: column; }
+  .nav-buttons .btn { width: 100%; }
+  /* Кнопки колеса - 100% ширина */
+  #wheelScreen .btn { width: 100%; max-width: 250px; margin: 8px auto; display: block; }
+}
+
+@media (max-width: 360px) {
+  .wheel-container { width: 160px; height: 160px; }
+  .wheel-legend { gap: 3px; }
+  .legend-item { font-size: 0.7rem; padding: 3px 6px; }
+  .header-panel { flex-direction: column; gap: 6px; }
+  .wheel-result { font-size: 1.3rem; }
+}
+
+/* LANDSCAPE */
+@media (max-height: 500px) and (orientation: landscape) {
+  .slide { min-height: 250px; max-height: 60vh; }
+  .prologue-screen { padding: 10px; }
+  .wheel-container { width: 140px; height: 140px; }
 }
 </style>
 </head>
 <body>
 <div class="game-container" id="gameContainer">
-  <!-- PROLOGUE SCREEN -->
+  <!-- PROLOGUE -->
   <div id="prologueScreen" class="prologue-screen">
     <h1 class="prologue-title">🔥 ПОЖАРНАЯ БЕЗОПАСНОСТЬ<br>ТЕХНОЛОГИЧЕСКИХ ПРОЦЕССОВ</h1>
-    
     <div class="prologue-role">
-      <h3>🎖️ ВЫБРАННАЯ РОЛЬ</h3>
-      <p style="font-size: 1.3rem; color: #eef2f5;">СПЕЦИАЛИСТ ПО ПРОМЫШЛЕННОЙ БЕЗОПАСНОСТИ</p>
+      <h3>🎖️ ВАША РОЛЬ</h3>
+      <p>СПЕЦИАЛИСТ ПО ПРОМЫШЛЕННОЙ БЕЗОПАСНОСТИ</p>
     </div>
-    
-    <p class="prologue-text">
-      Вы — инженер по пожарной безопасности на крупном нефтеперерабатывающем заводе. 
-      Ваша задача — предотвратить аварии, правильно оценивать риски и принимать верные решения 
-      в критических ситуациях. От ваших знаний зависят жизни людей и сохранность оборудования!
-    </p>
-    
-    <div class="mechanics-list">
-      <h3 style="color: #ff9f4b; margin-bottom: 15px;">📋 МЕХАНИКИ ИГРЫ:</h3>
-      <li><strong>❤️ 3 жизни</strong> — каждая ошибка отнимает жизнь. При 0 жизней — тест завершён</li>
-      <li><strong>💚 Хилка</strong> — за сложные вопросы (помечены 💜) вы получаете +1 жизнь (макс. 3)</li>
-      <li><strong>🔥 Комбо-система</strong> — 3+ правильных ответа подряд дают бонусную подсказку</li>
-      <li><strong>💡 3 подсказки</strong> — используйте мудро, они помогут в сложных вопросах</li>
-      <li><strong>🏆 Достижения</strong> — открывайте награды за успехи во время теста</li>
-      <li><strong>🎰 Колесо удачи</strong> — если оценка 2, можно попытать удачу и улучшить результат</li>
-    </div>
-    
-    <p class="prologue-text" style="color: #ffd966;">
-      ⚠️ ВНИМАНИЕ: Некоторые вопросы имеют несколько правильных ответов!
-    </p>
-    
-    <button class="btn start-btn" id="startBtn">🚀 НАЧАТЬ ИСПЫТАНИЕ</button>
+    <p class="prologue-text">Вы — инженер по пожарной безопасности. Предотвратите аварии и примите верные решения!</p>
+    <ul class="mechanics-list">
+      <h3>📋 МЕХАНИКИ:</h3>
+      <li><strong>❤️ 3 жизни</strong> — ошибка = −1 жизнь</li>
+      <li><strong>💚 Хилка</strong> — за сложные (💜) +1 жизнь</li>
+      <li><strong>🔥 Комбо</strong> — 3+ верных = бонус</li>
+      <li><strong>💡 3 подсказки</strong></li>
+      <li><strong>🎰 Колесо</strong> — при оценке 2</li>
+    </ul>
+    <p class="prologue-text" style="color:#ffd966">⚠️ Есть вопросы с несколькими ответами!</p>
+    <button class="btn start-btn" id="startBtn">🚀 НАЧАТЬ</button>
   </div>
-  
-  <!-- GAME SCREEN (hidden initially) -->
-  <div id="gameScreen" class="hidden">
+
+  <!-- GAME SCREEN -->
+  <div id="gameScreen" class="hidden" style="display:flex;flex-direction:column;flex:1;">
     <div class="header-panel">
-      <span class="title">🔥 ПОЖАРНАЯ БЕЗОПАСНОСТЬ</span>
-      <div style="display: flex; align-items: center; gap: 15px;">
-        <span class="hint-counter" id="hintCountDisplay">💡 подсказки: 3</span>
+      <span class="title">🔥 ПОЖБЕЗОПАСНОСТЬ</span>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="hint-counter" id="hintCountDisplay">💡 3</span>
         <span class="combo-display hidden" id="comboDisplay">🔥 x0</span>
         <div class="health" id="healthDisplay">
           <span class="heart" id="heart1">❤️</span>
@@ -537,296 +164,204 @@ input[type="radio"], input[type="checkbox"] {
         </div>
       </div>
     </div>
-    
     <div class="progress-wrapper">
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFill"></div>
-        <div class="flame-icon" id="flameIcon">🔥</div>
-      </div>
-      <div class="progress-text" id="progressText">Вопрос 1/30</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">1/30</div>
     </div>
-    
-    <div id="slideContainer" class="slide">
-      <!-- здесь динамически рендерятся слайды -->
-    </div>
+    <div id="slideContainer" class="slide"></div>
   </div>
-  
-  <!-- WHEEL SCREEN (hidden initially) -->
-  <div id="wheelScreen" class="hidden slide">
-    <h2 style="text-align: center; color: #ff9f4b; font-size: 2rem;">🎰 КОЛЕСО УДАЧИ</h2>
-    <p style="text-align: center; color: #bdd3e8;">Ваша оценка: <span id="wheelGrade" style="color: #ff3a3a; font-weight: 700;">2</span></p>
-    <p style="text-align: center; color: #eef2f5; margin-bottom: 20px;">Испытайте удачу и получите шанс улучшить результат!</p>
+
+  <!-- WHEEL SCREEN -->
+  <div id="wheelScreen" class="slide hidden">
+    <h2 style="text-align:center;color:#ff9f4b;font-size:1.3rem;margin:0 0 8px 0;">🎰 КОЛЕСО</h2>
+    <p style="text-align:center;color:#bdd3e8;font-size:0.85rem;margin:0 0 8px 0;">Оценка: <span id="wheelGrade" style="color:#ff3a3a;font-weight:700;">2</span></p>
     
     <div class="wheel-legend">
-      <div class="legend-item"><div class="legend-color" style="background: #2ecc71;"></div>5 (8%)</div>
-      <div class="legend-item"><div class="legend-color" style="background: #3498db;"></div>4 (17%)</div>
-      <div class="legend-item"><div class="legend-color" style="background: #f39c12;"></div>3 (36%)</div>
-      <div class="legend-item"><div class="legend-color" style="background: #e74c3c;"></div>2 (39%)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#2ecc71;"></div>5 (8%)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#3498db;"></div>4 (17%)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#f39c12;"></div>3 (28%)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#e74c3c;"></div>2 (47%)</div>
     </div>
     
     <div class="wheel-container">
       <div class="wheel-pointer"></div>
-      <div class="wheel" id="wheel">
-        <!-- segments generated by JS -->
-      </div>
+      <div class="wheel" id="wheel"></div>
       <div class="wheel-center">🎯</div>
     </div>
     
     <div class="wheel-result" id="wheelResult"></div>
     
-    <div style="text-align: center;">
-      <button class="btn start-btn" id="spinBtn">🎲 КРУТИТЬ КОЛЕСО</button>
-      <button class="btn secondary hidden" id="finishBtn" style="margin-top: 15px;">✅ ЗАВЕРШИТЬ</button>
+    <div style="text-align:center;">
+      <button class="btn start-btn" id="spinBtn">🎲 КРУТИТЬ</button>
+      <button class="btn secondary hidden" id="finishBtn">✅ ЗАВЕРШИТЬ</button>
     </div>
   </div>
 </div>
 
 <script>
 (function(){
-// ---------- DATA ----------
+// ========== DATA ==========
 const questions = [
-{ text: "Что такое «тетраэдр пожара» в отличие от «треугольника пожара»?", type: "single", difficulty: 1, options: ["Включает источник зажигания как отдельную сторону", "Включает цепную химическую реакцию как четвёртый элемент", "Учитывает площадь пожара", "Только для газов"], correct: [1] },
-{ text: "Температура вспышки — это минимальная температура вещества, при которой...", type: "single", difficulty: 1, options: ["Оно воспламеняется без источника зажигания", "Над его поверхностью образуются пары, способные вспыхивать от источника зажигания, но устойчивое горение не возникает", "Вещество горит устойчиво не менее 5 секунд", "Происходит самовозгорание"], correct: [1] },
-{ text: "Чем температура воспламенения отличается от температуры вспышки?", type: "single", difficulty: 1, options: ["Это одно и то же", "При температуре воспламенения возникает устойчивое горение после поднесения источника", "Температура воспламенения всегда ниже вспышки", "Температура воспламенения определяется только для газов"], correct: [1] },
-{ text: "Самовоспламенение — это процесс, при котором...", type: "single", difficulty: 1, options: ["Вещество загорается от искры", "Происходит резкое увеличение скорости экзотермических реакций без внешнего источника зажигания", "Только при контакте с кислородом воздуха", "Жидкость испаряется и загорается"], correct: [1] },
-{ text: "Что такое НКПВ (нижний концентрационный предел воспламенения)?", type: "single", difficulty: 1, options: ["Минимальное содержание горючего в смеси, при котором возможно распространение пламени по смеси", "Максимальное содержание горючего, при котором ещё возможно горение", "Концентрация, при которой происходит детонация", "Содержание паров в помещении"], correct: [0] },
-{ text: "ВКПВ — это предел, выше которого смесь...", type: "single", difficulty: 1, options: ["Не горит из-за недостатка окислителя", "Взрывается с максимальной силой", "Становится детонационноспособной", "Ядовита для человека"], correct: [0] },
-{ text: "Чем дефлаграция отличается от детонации?", type: "single", difficulty: 2, options: ["Дефлаграция — это горение со сверхзвуковой скоростью, детонация — с дозвуковой", "Дефлаграция — дозвуковое горение, детонация — распространение ударной волны со сжатием", "Разницы нет", "Детонация возможна только в газах"], correct: [1] },
-{ text: "Какой фактор НЕ является самостоятельным источником зажигания согласно теории?", type: "single", difficulty: 2, options: ["Электрическая искра", "Нагретая поверхность", "Кислород воздуха", "Пламя"], correct: [2] },
-{ text: "Какое условие необходимо для формирования горючей среды в аппарате с ЛВЖ?", type: "single", difficulty: 1, options: ["Температура жидкости ниже температуры вспышки", "Наличие паровоздушного пространства и концентрация паров в пределах НКПВ-ВКПВ", "Отсутствие вентиляции", "Высокое давление"], correct: [1] },
-{ text: "Влияние повышения температуры окружающей среды на пожароопасность паров ЛВЖ:", type: "single", difficulty: 1, options: ["Уменьшает концентрацию паров", "Приводит к снижению давления насыщенных паров", "Увеличивает давление паров и расширяет область воспламенения", "Не влияет"], correct: [2] },
-{ text: "Для чего нужна приточно-вытяжная вентиляция во взрывопожароопасных помещениях?", type: "single", difficulty: 1, options: ["Для комфорта персонала", "Чтобы поддерживать концентрацию горючих веществ ниже НКПВ", "Чтобы создавать избыточное давление", "Для удаления дыма при пожаре"], correct: [1] },
-{ text: "Что такое индивидуальный пожарный риск?", type: "single", difficulty: 1, options: ["Вероятность гибели человека в результате пожара за год", "Частота отказов систем пожаротушения", "Материальный ущерб на человека", "Количество пожарных на объекте"], correct: [0] },
-{ text: "Почему пары ЛВЖ тяжелее воздуха представляют особую опасность?", type: "single", difficulty: 1, options: ["Они поднимаются вверх", "Они скапливаются в приямках, колодцах, образуя взрывоопасные зоны", "Они легче рассеиваются", "Они не имеют запаха"], correct: [1] },
-{ text: "Температура самовоспламенения бензина по сравнению с дизельным топливом:", type: "single", difficulty: 2, options: ["Выше", "Ниже", "Примерно одинакова", "Не поддается сравнению"], correct: [1] },
-{ text: "Как классифицируются помещения по взрывопожарной опасности (категории А, Б)?", type: "single", difficulty: 1, options: ["По количеству пожарных гидрантов", "По свойствам обращающихся веществ и их количеству", "По этажности здания", "По типу освещения"], correct: [1] },
-{ text: "Какая среда наиболее опасна при утечке горючего газа в помещении?", type: "single", difficulty: 1, options: ["Сразу после утечки", "При достижении концентрации между НКПВ и ВКПВ", "При очень высокой концентрации (выше ВКПВ)", "При минимальной концентрации"], correct: [1] },
-{ text: "Что такое флегматизация горючей смеси?", type: "single", difficulty: 2, options: ["Добавление инертного газа для сужения области воспламенения", "Увеличение давления", "Охлаждение емкости", "Распыление воды"], correct: [0] },
-{ text: "При каком условии возможен переход дефлаграции в детонацию в трубопроводе?", type: "single", difficulty: 2, options: ["При низкой температуре", "При наличии турбулентности и длине трубы, достаточной для ускорения пламени", "При использовании катализатора", "При отсутствии кислорода"], correct: [1] },
-{ text: "Какая характеристика ЛВЖ наиболее критична для выбора режима перекачки?", type: "single", difficulty: 1, options: ["Цвет", "Температура вспышки и температура окружающей среды", "Вязкость при 0°C", "Плотность твердой фазы"], correct: [1] },
-{ text: "Дыхательный клапан резервуара предназначен для:", type: "single", difficulty: 1, options: ["Предотвращения превышения давления или вакуума и сокращения потерь паров", "Подачи воздуха внутрь", "Отбора проб", "Сброса пламени"], correct: [0] },
-{ text: "Какие факторы влияют на температуру вспышки жидкости? (выберите все верные)", type: "multiple", difficulty: 2, options: ["Давление окружающей среды", "Наличие примесей", "Цвет жидкости", "Метод определения (открытый/закрытый тигель)"], correct: [0,1,3] },
-{ text: "Какие меры предотвращают образование горючей среды внутри технологического оборудования?", type: "multiple", difficulty: 2, options: ["Герметизация", "Применение инертной подушки", "Использование искробезопасного инструмента", "Поддержание концентрации выше ВКПВ"], correct: [0,1,3] },
-{ text: "Какие явления относятся к вторичным источникам зажигания?", type: "multiple", difficulty: 2, options: ["Искры от удара", "Нагретые поверхности при пожаре", "Адиабатическое сжатие", "Искры статического электричества"], correct: [0,1,2,3] },
-{ text: "При оценке риска учитываются:", type: "multiple", difficulty: 1, options: ["Частота возникновения аварии", "Последствия для людей и окружающей среды", "Цвет окраски оборудования", "Эффективность систем безопасности"], correct: [0,1,3] },
-{ text: "Какие факторы увеличивают зону взрывоопасности при утечке сжиженного углеводородного газа?", type: "multiple", difficulty: 2, options: ["Ветер (слабый, штиль)", "Наличие приямков, канализации", "Высокая температура воздуха", "Низкая температура воздуха"], correct: [0,1,2] },
-{ text: "На установке перегонки нефти произошел разрыв трубопровода с температурой стенки 400°C. Вышел фонтан паров углеводородов. Какова наиболее вероятная последовательность развития аварии?", type: "single", difficulty: 2, options: ["Пары рассеются без последствий", "Самовоспламенение от нагретой поверхности с образованием факела", "Только токсическое отравление персонала", "Образование взрывоопасного облака с отсроченным взрывом"], correct: [1] },
-{ text: "В цехе, где используется ацетон (температура вспышки -18°C), при проведении ремонтных работ искра от электроинструмента вызвала вспышку. Какая первопричина создания взрывоопасной среды?", type: "single", difficulty: 1, options: ["Отсутствие приточно-вытяжной вентиляции или её неэффективность", "Высокая температура воздуха в цехе", "Наличие ацетона в закрытой таре", "Окраска стен масляной краской"], correct: [0] },
-{ text: "В резервуаре с этиловым спиртом (температура вспышки 13°C) уровень жидкости опустился ниже критического, и подклапанное пространство заполнилось паровоздушной смесью. В солнечный день резервуар нагрелся. Каков основной риск?", type: "single", difficulty: 2, options: ["Переполнение резервуара", "Срабатывание дыхательного клапана с выходом паров и возможным воспламенением от статики", "Разрыв корпуса от давления", "Уменьшение концентрации спирта"], correct: [1] },
-{ text: "Оператор открыл люк для отбора пробы из колонны с бензином (t=+30°C). Из люка повалил пар. Что произойдет, если концентрация паров достигнет 2% (НКПВ=1,4%, ВКПВ=7,6%) и рядом работает погрузчик с ДВС?", type: "single", difficulty: 2, options: ["Пар рассеется", "Произойдет воспламенение от двигателя или выхлопа", "Образуется токсичное облако", "Сработает сигнализация"], correct: [1] },
-{ text: "Произошла утечка пропана на складе. В помещении 2000 м³. Высота потолков 10 м. Куда будет скапливаться газ и какова первоочередная мера?", type: "single", difficulty: 1, options: ["Под потолком, включить вытяжку сверху", "В нижней зоне, обеспечить усиленную вентиляцию внизу и исключить источники зажигания", "Равномерно по объему, включить аварийное освещение", "В углах, открыть окна без учета розы ветров"], correct: [1] }
+{ text: "Что такое «тетраэдр пожара»?", type: "single", difficulty: 1, options: ["Включает источник зажигания", "Включает цепную химическую реакцию как 4-й элемент", "Учитывает площадь пожара", "Только для газов"], correct: [1] },
+{ text: "Температура вспышки — это...", type: "single", difficulty: 1, options: ["Воспламенение без источника", "Пары вспыхивают, но горение не устойчиво", "Горит 5+ секунд", "Самовозгорание"], correct: [1] },
+{ text: "Температура воспламенения vs вспышки?", type: "single", difficulty: 1, options: ["Одно и то же", "Устойчивое горение после источника", "Всегда ниже вспышки", "Только для газов"], correct: [1] },
+{ text: "Самовоспламенение — это...", type: "single", difficulty: 1, options: ["От искры", "Реакции без внешнего источника", "Только с кислородом", "Испарение и горение"], correct: [1] },
+{ text: "Что такое НКПВ?", type: "single", difficulty: 1, options: ["Мин. содержание для распространения пламени", "Макс. содержание для горения", "Концентрация детонации", "Пары в помещении"], correct: [0] },
+{ text: "ВКПВ — предел, выше которого смесь...", type: "single", difficulty: 1, options: ["Не горит (мало окислителя)", "Взрывается сильно", "Детонационноспособна", "Ядовита"], correct: [0] },
+{ text: "Дефлаграция vs детонация?", type: "single", difficulty: 2, options: ["Дефлаграция — сверхзвук", "Дефлаграция — дозвук, детонация — ударная волна", "Нет разницы", "Детонация только в газах"], correct: [1] },
+{ text: "НЕ источник зажигания?", type: "single", difficulty: 2, options: ["Искра", "Нагретая поверхность", "Кислород воздуха", "Пламя"], correct: [2] },
+{ text: "Условие горючей среды в аппарате с ЛВЖ?", type: "single", difficulty: 1, options: ["Температура ниже вспышки", "Пары в пределах НКПВ-ВКПВ", "Нет вентиляции", "Высокое давление"], correct: [1] },
+{ text: "Повышение температуры на пожароопасность?", type: "single", difficulty: 1, options: ["Уменьшает пары", "Снижает давление", "Увеличивает давление и область воспламенения", "Не влияет"], correct: [2] },
+{ text: "Зачем вентиляция во взрывоопасных помещениях?", type: "single", difficulty: 1, options: ["Комфорт", "Концентрация ниже НКПВ", "Избыточное давление", "Удаление дыма"], correct: [1] },
+{ text: "Индивидуальный пожарный риск?", type: "single", difficulty: 1, options: ["Вероятность гибели за год", "Частота отказов", "Ущерб на человека", "Количество пожарных"], correct: [0] },
+{ text: "Почему пары ЛВЖ тяжелее воздуха опасны?", type: "single", difficulty: 1, options: ["Поднимаются вверх", "Скапливаются в приямках", "Легко рассеиваются", "Без запаха"], correct: [1] },
+{ text: "Температура самовоспламенения бензина vs дизель?", type: "single", difficulty: 2, options: ["Выше", "Ниже", "Одинакова", "Не сравнивается"], correct: [1] },
+{ text: "Категории А, Б — классификация по...", type: "single", difficulty: 1, options: ["Гидрантам", "Свойствам и количеству веществ", "Этажности", "Освещению"], correct: [1] },
+{ text: "Самая опасная среда при утечке газа?", type: "single", difficulty: 1, options: ["Сразу после утечки", "Концентрация между НКПВ и ВКПВ", "Очень высокая концентрация", "Минимальная"], correct: [1] },
+{ text: "Флегматизация — это...", type: "single", difficulty: 2, options: ["Инертный газ для сужения области воспламенения", "Увеличение давления", "Охлаждение", "Распыление воды"], correct: [0] },
+{ text: "Переход дефлаграции в детонацию в трубе?", type: "single", difficulty: 2, options: ["Низкая температура", "Турбулентность + длина трубы", "Катализатор", "Нет кислорода"], correct: [1] },
+{ text: "Критичная характеристика ЛВЖ для перекачки?", type: "single", difficulty: 1, options: ["Цвет", "Температура вспышки и среды", "Вязкость при 0°C", "Плотность"], correct: [1] },
+{ text: "Дыхательный клапан резервуара — для...", type: "single", difficulty: 1, options: ["Предотвращение давления/вакуума", "Подача воздуха", "Отбор проб", "Сброс пламени"], correct: [0] },
+{ text: "Факторы температуры вспышки? (все верные)", type: "multiple", difficulty: 2, options: ["Давление", "Примеси", "Цвет", "Метод определения"], correct: [0,1,3] },
+{ text: "Меры предотвращения горючей среды?", type: "multiple", difficulty: 2, options: ["Герметизация", "Инертная подушка", "Искробезопасный инструмент", "Концентрация выше ВКПВ"], correct: [0,1,3] },
+{ text: "Вторичные источники зажигания?", type: "multiple", difficulty: 2, options: ["Искры от удара", "Нагретые поверхности", "Адиабатическое сжатие", "Статическое электричество"], correct: [0,1,2,3] },
+{ text: "При оценке риска учитываются:", type: "multiple", difficulty: 1, options: ["Частота аварии", "Последствия", "Цвет оборудования", "Эффективность систем"], correct: [0,1,3] },
+{ text: "Факторы зоны взрывоопасности при утечке СУГ?", type: "multiple", difficulty: 2, options: ["Штиль", "Приямы", "Высокая температура", "Низкая температура"], correct: [0,1,2] },
+{ text: "Разрыв трубы 400°C, фонтан паров. Что будет?", type: "single", difficulty: 2, options: ["Рассеются", "Самовоспламенение с факелом", "Только отравление", "Облако с взрывом"], correct: [1] },
+{ text: "Ацетон (-18°C), искра → вспышка. Причина?", type: "single", difficulty: 1, options: ["Нет вентиляции", "Высокая температура", "Ацетон в таре", "Масляная краска"], correct: [0] },
+{ text: "Спирт в резервуаре, нагрев солнцем. Риск?", type: "single", difficulty: 2, options: ["Переполнение", "Клапан + пары + статика", "Разрыв корпуса", "Уменьшение концентрации"], correct: [1] },
+{ text: "Бензин 30°C, 2% паров, рядом погрузчик?", type: "single", difficulty: 2, options: ["Рассеется", "Воспламенение от двигателя", "Токсичное облако", "Сигнализация"], correct: [1] },
+{ text: "Пропан 2000м³, потолки 10м. Куда и мера?", type: "single", difficulty: 1, options: ["Под потолок, вытяжка сверху", "Вниз, вентиляция внизу + нет источников", "Равномерно, аварийное освещение", "В углах, окна"], correct: [1] }
 ];
 
 const exercises = [
-{ id: "ex1", title: "Упражнение 1. Инженерный разбор (нефтебаза)", description: "На нефтебазе хранится бензин в вертикальном резервуаре. Условия: t=+25°C, объём 1000 м³, дыхательный клапан, утечка в насосном узле.<br>1) Где возможно формирование горючей среды?<br>2) Какие источники зажигания возможны?<br>3) Какой наиболее опасный сценарий?<br>4) Какие меры первоочередные?<br><br>Введите краткий ответ (основные идеи):" },
-{ id: "ex2", title: "Упражнение 2. Расчёт объёма паров (НКПВ)", description: "НКПВ бензина ≈ 1,4 % по объёму. В помещении объёмом 200 м³ произошла утечка паров. Какой объём паров бензина (в м³) необходим, чтобы достигнуть НКПВ? (ответ числом)" },
-{ id: "ex3", title: "Упражнение 3. Разорви цепочку", description: "Цепочка: Утечка → образование смеси → источник → взрыв. Предложите 2–3 способа разорвать эту цепочку (вентиляция, инертирование и т.п.)" }
+{ id: "ex1", title: "Упр. 1. Нефтебаза", description: "Бензин в резервуаре, t=+25°C. Где горючая среда? Источники? Сценарий? Меры?" },
+{ id: "ex2", title: "Упр. 2. Расчёт НКПВ", description: "НКПВ=1,4%. Помещение 200м³. Какой объём паров нужен? (числом)" },
+{ id: "ex3", title: "Упр. 3. Разорви цепь", description: "Утечка → смесь → источник → взрыв. 2-3 способа разорвать цепь." }
 ];
 
-// Игровые переменные
-let currentSlide = 0;
-let lives = 3;
-let hintsLeft = 3;
-let combo = 0;
-let bonusHints = 0;
-let userAnswers = Array(questions.length).fill(null).map(() => ([]));
+// ========== VARIABLES ==========
+let currentSlide = 0, lives = 3, hintsLeft = 3, combo = 0, bonusHints = 0;
+let userAnswers = Array(questions.length).fill(null).map(() => []);
 let exerciseAnswers = { ex1: "", ex2: "", ex3: "" };
-let testFinished = false;
-let answersChecked = Array(questions.length).fill(false);
-const totalQuestions = questions.length;
-const totalSlides = totalQuestions + exercises.length + 1;
+let testFinished = false, answersChecked = Array(questions.length).fill(false);
+const totalQuestions = questions.length, totalSlides = totalQuestions + exercises.length + 1;
 
-// Достижения
 const achievements = {
-  firstBlood: { name: "Первый спасённый объект", unlocked: false, icon: "🎖️" },
+  firstBlood: { name: "Первый объект", unlocked: false, icon: "🎖️" },
   perfect3: { name: "Тройной эксперт", unlocked: false, icon: "🔥" },
   perfect5: { name: "Пятерной профи", unlocked: false, icon: "⭐" },
-  noHints: { name: "Самостоятельный герой", unlocked: false, icon: "💪" },
+  noHints: { name: "Самостоятельный", unlocked: false, icon: "💪" },
   survivor: { name: "Выживший", unlocked: false, icon: "❤️" },
   healer: { name: "Целитель", unlocked: false, icon: "💚" }
 };
 
-// Глобальный container
 const container = document.getElementById('slideContainer');
 const prologueScreen = document.getElementById('prologueScreen');
 const gameScreen = document.getElementById('gameScreen');
 const wheelScreen = document.getElementById('wheelScreen');
 
-// ---------- PROLOGUE ----------
+// ========== START ==========
 document.getElementById('startBtn').addEventListener('click', () => {
   prologueScreen.classList.add('hidden');
   gameScreen.classList.remove('hidden');
+  gameScreen.style.display = 'flex';
   renderSlide();
 });
 
-// ---------- CORE FUNCTIONS ----------
+// ========== CORE ==========
 function renderSlide() {
   if (!container) return;
-  if (testFinished && currentSlide < totalQuestions) {
-    currentSlide = totalQuestions;
-  }
-  if (currentSlide < totalQuestions) {
-    renderQuestionSlide(currentSlide);
-  } else if (currentSlide < totalQuestions + exercises.length) {
-    renderExerciseSlide(currentSlide - totalQuestions);
-  } else {
-    renderFinalSlide();
-  }
+  if (testFinished && currentSlide < totalQuestions) currentSlide = totalQuestions;
+  if (currentSlide < totalQuestions) renderQuestionSlide(currentSlide);
+  else if (currentSlide < totalQuestions + exercises.length) renderExerciseSlide(currentSlide - totalQuestions);
+  else renderFinalSlide();
   updateHearts();
   updateProgress();
-  document.getElementById('hintCountDisplay').innerText = `💡 подсказки: ${hintsLeft + bonusHints}`;
+  document.getElementById('hintCountDisplay').innerText = `💡 ${hintsLeft + bonusHints}`;
   updateComboDisplay();
 }
 
 function renderQuestionSlide(index) {
   const q = questions[index];
-  let html = `<div class="slide-header">`;
-  html += `<span class="question-counter">Вопрос ${index+1}/${totalQuestions}</span>`;
-  if (q.difficulty === 2) {
-    html += `<span class="difficulty-badge">💜 СЛОЖНЫЙ +❤️</span>`;
-  }
-  html += `</div>`;
-  html += `<div class="test-question">${q.text}</div>`;
-  html += `<div class="options" id="optionsContainer">`;
+  let html = `<div class="slide-header"><span class="question-counter">${index+1}/${totalQuestions}</span>`;
+  if (q.difficulty === 2) html += `<span class="difficulty-badge">💜 +❤️</span>`;
+  html += `</div><div class="test-question">${q.text}</div><div class="options">`;
+  
   q.options.forEach((opt, optIndex) => {
     let selected = (userAnswers[index] || []).includes(optIndex) ? 'selected' : '';
     let type = q.type === 'multiple' ? 'checkbox' : 'radio';
-    let name = q.type === 'multiple' ? `q${index}_${optIndex}` : `q${index}`;
-    html += `<label class="option-item ${selected}" data-opt-index="${optIndex}">`;
-    html += `<input type="${type}" name="${type === 'multiple' ? name : 'q'+index}" value="${optIndex}" ${selected ? 'checked' : ''}> ${opt}`;
-    html += `</label>`;
+    html += `<label class="option-item ${selected}" data-opt-index="${optIndex}">
+      <input type="${type}" name="q${index}" value="${optIndex}" ${selected ? 'checked' : ''}> ${opt}
+    </label>`;
   });
   html += `</div>`;
-  if (hintsLeft + bonusHints > 0) {
-    html += `<div class="hint-box" id="hintBlock">💡 Нажмите "подсказка", чтобы получить намёк (осталось ${hintsLeft + bonusHints})</div>`;
-  }
-  html += `<div class="nav-buttons">`;
-  html += `<button class="btn secondary" id="prevBtn" ${index===0 ? 'disabled' : ''}>◀ Назад</button>`;
-  if (hintsLeft + bonusHints > 0) {
-    html += `<button class="btn secondary" id="hintBtn">💡 Подсказка</button>`;
-  } else {
-    html += `<button class="btn secondary" disabled>💡 нет подсказок</button>`;
-  }
-  html += `<button class="btn" id="nextBtn">${index === totalQuestions-1 ? 'К упражнениям ▶' : 'Далее ▶'}</button>`;
-  html += `</div>`;
+  
+  if (hintsLeft + bonusHints > 0) html += `<div class="hint-box" id="hintBlock">💡 Подсказка (${hintsLeft + bonusHints})</div>`;
+  
+  html += `<div class="nav-buttons">
+    <button class="btn secondary" id="prevBtn" ${index===0 ? 'disabled' : ''}>◀</button>
+    <button class="btn secondary" id="hintBtn" ${hintsLeft + bonusHints <= 0 ? 'disabled' : ''}>💡</button>
+    <button class="btn" id="nextBtn">${index === totalQuestions-1 ? 'Упр. ▶' : '▶'}</button>
+  </div>`;
+  
   container.innerHTML = html;
-
+  
   document.querySelectorAll('.option-item input').forEach(inp => {
-    inp.addEventListener('change', function(e) {
+    inp.addEventListener('change', function() {
       let parent = this.closest('.option-item');
       let optVal = parseInt(parent.dataset.optIndex);
       if (q.type === 'multiple') {
         let current = userAnswers[index] || [];
-        if (this.checked) {
-          if (!current.includes(optVal)) current.push(optVal);
-        } else {
-          current = current.filter(v => v !== optVal);
-        }
+        if (this.checked) { if (!current.includes(optVal)) current.push(optVal); }
+        else { current = current.filter(v => v !== optVal); }
         userAnswers[index] = current;
       } else {
         userAnswers[index] = [optVal];
-        document.querySelectorAll(`.option-item input[name="q${index}"]`).forEach(r => {
-          if (r !== this) r.checked = false;
-        });
+        document.querySelectorAll(`.option-item input[name="q${index}"]`).forEach(r => { if (r !== this) r.checked = false; });
       }
       renderQuestionSlide(index);
     });
   });
-
-  document.getElementById('prevBtn')?.addEventListener('click', () => {
-    if (index > 0) { currentSlide--; renderSlide(); }
+  
+  document.getElementById('prevBtn')?.addEventListener('click', () => { if (index > 0) { currentSlide--; renderSlide(); } });
+  document.getElementById('nextBtn')?.addEventListener('click', () => { checkAnswer(index); if (index < totalQuestions-1) { currentSlide++; } else { currentSlide = totalQuestions; } renderSlide(); });
+  document.getElementById('hintBtn')?.addEventListener('click', () => {
+    if (hintsLeft + bonusHints <= 0) return;
+    if (hintsLeft > 0) hintsLeft--; else bonusHints--;
+    document.getElementById('hintCountDisplay').innerText = `💡 ${hintsLeft + bonusHints}`;
+    let hintDiv = document.getElementById('hintBlock');
+    if (hintDiv) hintDiv.innerHTML = `🔎 ${getHintForQuestion(index)}`;
+    if (hintsLeft + bonusHints === 0) renderSlide();
   });
-
-  document.getElementById('nextBtn')?.addEventListener('click', () => {
-    checkAnswer(index);
-    if (index < totalQuestions-1) {
-      currentSlide++;
-      renderSlide();
-    } else {
-      currentSlide = totalQuestions;
-      renderSlide();
-    }
-  });
-
-  if (hintsLeft + bonusHints > 0) {
-    document.getElementById('hintBtn')?.addEventListener('click', () => {
-      if (hintsLeft + bonusHints <= 0) return;
-      if (hintsLeft > 0) hintsLeft--;
-      else bonusHints--;
-      let hintText = getHintForQuestion(index);
-      document.getElementById('hintCountDisplay').innerText = `💡 подсказки: ${hintsLeft + bonusHints}`;
-      let hintDiv = document.getElementById('hintBlock') || document.createElement('div');
-      hintDiv.innerHTML = `🔎 Подсказка: ${hintText}`;
-      hintDiv.classList.add('hint-box');
-      if (!document.getElementById('hintBlock')) {
-        document.querySelector('.options').after(hintDiv);
-      } else {
-        document.getElementById('hintBlock').innerHTML = `🔎 Подсказка: ${hintText}`;
-      }
-      if (hintsLeft + bonusHints === 0) renderSlide();
-    });
-  }
 }
 
 function checkAnswer(index) {
   if (answersChecked[index]) return;
   answersChecked[index] = true;
-  
-  const q = questions[index];
-  const user = userAnswers[index] || [];
-  const correct = q.correct;
-  let isCorrect = false;
-  
-  if (q.type === 'single') {
-    isCorrect = user.length === 1 && user[0] === correct[0];
-  } else {
-    isCorrect = user.length === correct.length && user.every(v => correct.includes(v));
-  }
+  const q = questions[index], user = userAnswers[index] || [], correct = q.correct;
+  let isCorrect = q.type === 'single' ? (user.length === 1 && user[0] === correct[0]) : (user.length === correct.length && user.every(v => correct.includes(v)));
   
   if (isCorrect) {
     combo++;
     showFloatingText(`✅ +${combo} комбо!`, "#2ecc71");
-    
-    if (q.difficulty === 2 && lives < 3) {
-      lives++;
-      showFloatingText("💚 +1 ЖИЗНЬ!", "#2ecc71");
-      checkAchievements('healer');
-      showHealNotification();
-    }
-    
-    if (combo >= 3) {
-      bonusHints++;
-      showFloatingText("+1 💡 БОНУС!", "#ffd966");
-      checkAchievements('perfect3');
-    }
-    if (combo >= 5) {
-      checkAchievements('perfect5');
-    }
+    if (q.difficulty === 2 && lives < 3) { lives++; showFloatingText("💚 +1 ЖИЗНЬ!", "#2ecc71"); checkAchievements('healer'); showHealNotification(); }
+    if (combo >= 3) { bonusHints++; showFloatingText("+1 💡", "#ffd966"); checkAchievements('perfect3'); }
+    if (combo >= 5) checkAchievements('perfect5');
   } else {
     combo = 0;
-    if (lives > 0) {
-      lives--;
-      animateBrokenHeart();
-    }
+    if (lives > 0) { lives--; animateBrokenHeart(); }
     showFloatingText("💥 Комбо сброшено", "#ff6b6b");
     updateHearts();
-    if (lives === 0) {
-      checkAchievements('survivor');
-      testFinished = true;
-    }
+    if (lives === 0) { checkAchievements('survivor'); testFinished = true; }
   }
-  
-  if (combo === 0 && hintsLeft === 3) {
-    checkAchievements('firstBlood');
-  }
-  
   checkAchievements();
 }
 
 function showHealNotification() {
   const notif = document.createElement('div');
   notif.className = 'heal-notification';
-  notif.innerHTML = '💚 +1 ЖИЗНЬ!<br><small style="font-size:1rem;">За сложный вопрос</small>';
+  notif.innerHTML = '💚 +1 ЖИЗНЬ!';
   document.body.appendChild(notif);
   setTimeout(() => notif.remove(), 1000);
 }
@@ -836,215 +371,112 @@ function animateBrokenHeart() {
     const heart = document.getElementById(`heart${i}`);
     if (heart && heart.textContent === '❤️') {
       heart.classList.add('broken');
-      setTimeout(() => {
-        heart.classList.remove('broken');
-        updateHearts();
-      }, 600);
+      setTimeout(() => { heart.classList.remove('broken'); updateHearts(); }, 500);
       break;
     }
   }
 }
 
 function checkAchievements(type) {
-  if (type === 'firstBlood' && !achievements.firstBlood.unlocked) {
-    achievements.firstBlood.unlocked = true;
-    showAchievementUnlock('firstBlood');
-  }
-  if (type === 'perfect3' && !achievements.perfect3.unlocked && combo >= 3) {
-    achievements.perfect3.unlocked = true;
-    showAchievementUnlock('perfect3');
-  }
-  if (type === 'perfect5' && !achievements.perfect5.unlocked && combo >= 5) {
-    achievements.perfect5.unlocked = true;
-    showAchievementUnlock('perfect5');
-  }
-  if (type === 'healer' && !achievements.healer.unlocked) {
-    achievements.healer.unlocked = true;
-    showAchievementUnlock('healer');
-  }
-  if (lives === 1 && !achievements.survivor.unlocked) {
-    achievements.survivor.unlocked = true;
-    showAchievementUnlock('survivor');
-  }
-  if (hintsLeft === 0 && bonusHints === 0 && !achievements.noHints.unlocked) {
-    achievements.noHints.unlocked = true;
-    showAchievementUnlock('noHints');
-  }
-}
-
-function showAchievementUnlock(id) {
-  const ach = achievements[id];
-  showFloatingText(`🏆 ${ach.icon} ${ach.name}`, "#ffd966");
+  const achMap = { firstBlood: !achievements.firstBlood.unlocked, perfect3: !achievements.perfect3.unlocked && combo >= 3, perfect5: !achievements.perfect5.unlocked && combo >= 5, healer: !achievements.healer.unlocked && type === 'healer', survivor: !achievements.survivor.unlocked && lives === 1, noHints: !achievements.noHints.unlocked && hintsLeft === 0 && bonusHints === 0 };
+  for (let key in achMap) { if (achMap[key]) { achievements[key].unlocked = true; showFloatingText(`🏆 ${achievements[key].icon} ${achievements[key].name}`, "#ffd966"); } }
 }
 
 function showFloatingText(text, color) {
   const el = document.createElement('div');
-  el.textContent = text;
   el.className = 'floating-text';
-  el.style.background = color === '#2ecc71' ? 'linear-gradient(135deg, #2ecc71, #27ae60)' :
-                        color === '#ff6b6b' ? 'linear-gradient(135deg, #ff6b6b, #ee5a5a)' :
-                        color === '#ffd966' ? 'linear-gradient(135deg, #ffd966, #f39c12)' :
-                        'linear-gradient(135deg, #ff9f4b, #ff6a00)';
-  el.style.top = '20%';
-  el.style.left = '50%';
-  el.style.transform = 'translateX(-50%)';
+  el.textContent = text;
+  el.style.background = color === '#2ecc71' ? 'linear-gradient(135deg, #2ecc71, #27ae60)' : color === '#ff6b6b' ? 'linear-gradient(135deg, #ff6b6b, #ee5a5a)' : color === '#ffd966' ? 'linear-gradient(135deg, #ffd966, #f39c12)' : 'linear-gradient(135deg, #ff9f4b, #ff6a00)';
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 1500);
 }
 
 function updateComboDisplay() {
   const comboEl = document.getElementById('comboDisplay');
-  if (combo >= 2) {
-    comboEl.classList.remove('hidden');
-    comboEl.textContent = `🔥 x${combo}`;
-  } else {
-    comboEl.classList.add('hidden');
-  }
+  if (combo >= 2) { comboEl.classList.remove('hidden'); comboEl.textContent = `🔥 x${combo}`; }
+  else comboEl.classList.add('hidden');
 }
 
 function updateProgress() {
   const percent = ((currentSlide + 1) / totalSlides) * 100;
   document.getElementById('progressFill').style.width = percent + '%';
-  document.getElementById('progressText').textContent = `Вопрос ${Math.min(currentSlide+1, totalQuestions)}/${totalQuestions}`;
+  document.getElementById('progressText').textContent = `${Math.min(currentSlide+1, totalQuestions)}/${totalQuestions}`;
 }
 
 function updateHearts() {
   for (let i = 1; i <= 3; i++) {
     const heart = document.getElementById(`heart${i}`);
-    if (lives >= i) {
-      heart.textContent = '❤️';
-      heart.style.color = '#ff3a3a';
-      heart.style.textShadow = '0 0 8px #ff0000';
-    } else {
-      heart.textContent = '🖤';
-      heart.style.color = '#2a2a3a';
-      heart.style.textShadow = 'none';
-    }
+    if (lives >= i) { heart.textContent = '❤️'; heart.style.color = '#ff3a3a'; }
+    else { heart.textContent = '🖤'; heart.style.color = '#2a2a3a'; }
   }
 }
 
 function getHintForQuestion(qIndex) {
-  const hints = [
-    "четыре элемента, включая химию", "неустойчивое горение", "устойчивость горения",
-    "без искры, саморазогрев", "минимальная концентрация", "мало кислорода",
-    "скорость звука", "это не источник", "пары + воздух", "давление паров растет",
-    "разбавление", "вероятность гибели", "внизу", "бензин легче воспламеняется",
-    "по количеству и свойствам", "диапазон", "инертный газ", "турбулентность",
-    "вспышка", "давление/вакуум", "влияют давление, примеси, метод",
-    "герметизация, инерт, выше ВКПВ", "все могут быть вторичными",
-    "частота, последствия, эффективность", "ветер, приямки, тепло",
-    "высокая температура трубы", "вентиляция отсутствовала",
-    "дыхательный клапан, статика", "2% в пределах, двигатель", "пропан тяжелее, низ"
-  ];
-  return hints[qIndex] || "подумайте о физике процесса";
+  const hints = ["4 элемента + химия", "неустойчивое горение", "устойчивое горение", "без искры", "мин. концентрация", "мало кислорода", "скорость звука", "не источник", "пары + воздух", "давление растёт", "разбавление", "вероятность гибели", "внизу", "бензин ниже", "свойства + количество", "диапазон", "инертный газ", "турбулентность", "вспышка", "давление/вакуум", "давление, примеси, метод", "герметизация, инерт", "все вторичные", "частота, последствия, системы", "штиль, приямки, тепло", "температура трубы", "нет вентиляции", "клапан + статика", "2% в пределах", "пропан вниз"];
+  return hints[qIndex] || "думайте о физике";
 }
 
 function renderExerciseSlide(exIndex) {
   const ex = exercises[exIndex];
   let answer = exerciseAnswers[ex.id] || '';
-  let html = `<div class="slide-header"><span>Упражнение ${exIndex+1}/${exercises.length}</span></div>`;
-  html += `<div class="exercise-panel">`;
-  html += `<h3>${ex.title}</h3>`;
-  html += `<p>${ex.description}</p>`;
-  html += `<input class="exercise-input" id="exInput" value="${answer.replace(/"/g, '&quot;')}" placeholder="ваш ответ..." autocomplete="off">`;
-  html += `<div class="exercise-feedback" id="exFeedback"></div>`;
-  html += `</div>`;
-  html += `<div class="nav-buttons">`;
-  html += `<button class="btn secondary" id="prevExBtn">◀ Назад</button>`;
-  html += `<button class="btn" id="checkExBtn">Проверить</button>`;
-  html += `<button class="btn" id="nextExBtn">${exIndex === exercises.length-1 ? 'Завершить' : 'Далее ▶'}</button>`;
-  html += `</div>`;
+  let html = `<div class="slide-header"><span>Упр. ${exIndex+1}/${exercises.length}</span></div>
+  <div class="exercise-panel"><h3>${ex.title}</h3><p>${ex.description}</p>
+  <input class="exercise-input" id="exInput" value="${answer.replace(/"/g, '&quot;')}" placeholder="ответ...">
+  <div class="exercise-feedback" id="exFeedback"></div></div>
+  <div class="nav-buttons">
+    <button class="btn secondary" id="prevExBtn">◀</button>
+    <button class="btn" id="checkExBtn">✓</button>
+    <button class="btn" id="nextExBtn">${exIndex === exercises.length-1 ? 'Финиш ▶' : '▶'}</button>
+  </div>`;
   container.innerHTML = html;
-
-  document.getElementById('prevExBtn').addEventListener('click', () => {
-    if (currentSlide > totalQuestions) currentSlide--;
-    else currentSlide = totalQuestions-1;
-    renderSlide();
-  });
-
+  
+  document.getElementById('prevExBtn').addEventListener('click', () => { if (currentSlide > totalQuestions) currentSlide--; else currentSlide = totalQuestions-1; renderSlide(); });
   document.getElementById('checkExBtn').addEventListener('click', () => {
     let inp = document.getElementById('exInput').value.trim().toLowerCase();
     exerciseAnswers[ex.id] = inp;
     let fb = document.getElementById('exFeedback');
-    if (ex.id === 'ex1') {
-      if (inp.includes('приям') || inp.includes('насос') || inp.includes('обвалов') || inp.includes('взрыв') || inp.includes('вентил')) {
-        fb.innerHTML = '✅ Принято (ключевые слова: приямки, насос, взрыв, вентиляция)';
-      } else fb.innerHTML = '🤔 Почти, учти скопление паров, источники (статика, искры) и взрыв.';
-    } else if (ex.id === 'ex2') {
-      let num = parseFloat(inp);
-      if (!isNaN(num) && Math.abs(num - 2.8) < 0.3) fb.innerHTML = '✅ Верно! Объём = 200 * 0,014 = 2,8 м³.';
-      else fb.innerHTML = '❌ Нужно 200 * 0,014 = 2,8 м³. Попробуй ещё раз.';
-    } else if (ex.id === 'ex3') {
-      if (inp.includes('вентил') || inp.includes('инерт') || inp.includes('контроль') || inp.includes('искробез') || inp.includes('гермет')) {
-        fb.innerHTML = '✅ Отлично, цепочка рвётся барьерами.';
-      } else fb.innerHTML = '🤔 подумай о вентиляции, инертировании, искробезопасности.';
-    }
+    if (ex.id === 'ex1') fb.innerHTML = inp.includes('приям') || inp.includes('насос') || inp.includes('взрыв') || inp.includes('вентил') ? '✅ Принято' : '🤔 Подумай ещё';
+    else if (ex.id === 'ex2') { let num = parseFloat(inp); fb.innerHTML = !isNaN(num) && Math.abs(num - 2.8) < 0.3 ? '✅ Верно! 2,8 м³' : '❌ 200 × 0,014 = 2,8'; }
+    else if (ex.id === 'ex3') fb.innerHTML = inp.includes('вентил') || inp.includes('инерт') || inp.includes('гермет') ? '✅ Отлично' : '🤔 Вентиляция, инерт, гермет';
   });
-
-  document.getElementById('nextExBtn').addEventListener('click', () => {
-    if (exIndex === exercises.length-1) {
-      currentSlide = totalQuestions + exercises.length;
-    } else {
-      currentSlide++;
-    }
-    renderSlide();
-  });
+  document.getElementById('nextExBtn').addEventListener('click', () => { if (exIndex === exercises.length-1) currentSlide = totalQuestions + exercises.length; else currentSlide++; renderSlide(); });
 }
 
 function renderFinalSlide() {
   let correctCount = 0;
   for (let i=0; i<questions.length; i++) {
-    let q = questions[i];
-    let user = userAnswers[i] || [];
-    let corr = q.correct;
-    if (q.type === 'single') {
-      if (user.length===1 && user[0]===corr[0]) correctCount++;
-    } else {
-      if (user.length === corr.length && user.every(v => corr.includes(v))) correctCount++;
-    }
+    let q = questions[i], user = userAnswers[i] || [], corr = q.correct;
+    if (q.type === 'single') { if (user.length===1 && user[0]===corr[0]) correctCount++; }
+    else { if (user.length === corr.length && user.every(v => corr.includes(v))) correctCount++; }
   }
-  let total = questions.length;
-  let percent = Math.round((correctCount/total)*100);
-  let grade = percent>=90? '5 (отлично)' : percent>=75? '4 (хорошо)' : percent>=60? '3 (удовл.)' : '2 (неуд.)';
-  let gradeNum = percent>=90? 5 : percent>=75? 4 : percent>=60? 3 : 2;
+  let total = questions.length, percent = Math.round((correctCount/total)*100);
+  let grade = percent>=90 ? '5' : percent>=75 ? '4' : percent>=60 ? '3' : '2';
+  let gradeNum = parseInt(grade);
   
-  let html = `<div class="final-score">`;
-  html += `<h2>🏁 ТЕСТ ЗАВЕРШЁН</h2>`;
-  html += `<div style="font-size:3rem;">${correctCount}/${total}</div>`;
-  html += `<div>${percent}% — ${grade}</div>`;
-  html += `<div style="margin-top:30px;">❤️ жизни: ${lives >= 1 ? '❤️' : '🖤'}${lives >= 2 ? '❤️' : '🖤'}${lives >= 3 ? '❤️' : '🖤'}</div>`;
-  
-  html += `<div class="achievements-panel">`;
-  html += `<h3 style="color: #ffd966; margin-bottom: 15px;">🏆 ДОСТИЖЕНИЯ:</h3>`;
+  let html = `<div class="final-score"><h2>🏁 ФИНИШ</h2>
+  <div style="font-size:2rem;">${correctCount}/${total}</div>
+  <div>${percent}% — <strong style="color:${gradeNum>=3?'#2ecc71':'#e74c3c'}">${grade}</strong></div>
+  <div style="margin-top:15px;">${'❤️'.repeat(lives)}${'🖤'.repeat(3-lives)}</div>
+  <div class="achievements-panel"><h3>🏆 ДОСТИЖЕНИЯ:</h3>`;
   for (let key in achievements) {
     let ach = achievements[key];
-    html += `<div class="achievement-item ${ach.unlocked ? 'unlocked' : ''}">`;
-    html += `<span class="achievement-icon">${ach.icon}</span>`;
-    html += `<span class="achievement-name">${ach.name}</span>`;
-    html += `</div>`;
+    html += `<div class="achievement-item ${ach.unlocked ? 'unlocked' : ''}"><span class="achievement-icon">${ach.icon}</span><span>${ach.name}</span></div>`;
   }
-  html += `</div>`;
+  html += `</div><button class="btn" id="showAnswersBtn">📋 Ответы</button>`;
+  if (gradeNum === 2) html += `<button class="btn start-btn" id="wheelBtn" style="margin-top:10px;">🎰 КОЛЕСО</button>`;
+  html += `<button class="btn secondary" onclick="location.reload()" style="margin-top:8px;">🔄 ЗАНОВО</button></div>`;
   
-  html += `<button class="btn" id="showAnswersBtn">Показать правильные ответы</button>`;
-  
-  if (gradeNum === 2) {
-    html += `<button class="btn start-btn" id="wheelBtn" style="margin-top: 20px;">🎰 ИСПЫТАТЬ УДАЧУ</button>`;
-  }
-  
-  html += `</div><div id="answersDetail" class="answers-block" style="margin-top:30px;"></div>`;
   container.innerHTML = html;
-
+  
   document.getElementById('showAnswersBtn')?.addEventListener('click', () => {
-    let detail = '<h3>📋 Ответы и пояснения:</h3>';
+    let detail = '<h3>📋 ОТВЕТЫ:</h3>';
     for (let i=0; i<questions.length; i++) {
       let q = questions[i];
-      let correctIndexes = q.correct;
-      let correctTexts = correctIndexes.map(idx => q.options[idx]).join('; ');
-      detail += `<p><strong>${i+1}.</strong> ${q.text}<br> ✅ Верно: ${correctTexts}</p>`;
+      detail += `<p style="font-size:0.85rem;"><strong>${i+1}.</strong> ${q.text}<br>✅ ${q.correct.map(idx => q.options[idx]).join('; ')}</p>`;
     }
-    document.getElementById('answersDetail').innerHTML = detail;
+    container.innerHTML += `<div style="margin-top:15px;text-align:left;font-size:0.8rem;">${detail}</div>`;
   });
-
+  
   document.getElementById('wheelBtn')?.addEventListener('click', () => {
     gameScreen.classList.add('hidden');
     wheelScreen.classList.remove('hidden');
@@ -1052,22 +484,13 @@ function renderFinalSlide() {
   });
 }
 
-// ---------- WHEEL OF FORTUNE - ИСПРАВЛЕННЫЕ ШАНСЫ ----------
+// ========== WHEEL ==========
 let wheelSpun = false;
 
 function initWheel() {
   const wheel = document.getElementById('wheel');
-  
-  // Шансы: 5(8%), 4(10%), 3(28%), 2(54%)
-  wheel.style.background = 'conic-gradient(' +
-    '#2ecc71 0deg 28.8deg, ' +      // 5 (8%) - зелёный
-    '#3498db 28.8deg 64.8deg, ' +   // 4 (10%) - синий
-    '#f39c12 64.8deg 165.6deg, ' +  // 3 (28%) - оранжевый
-    '#e74c3c 165.6deg 360deg' +     // 2 (54%) - красный
-    ')';
-  
+  wheel.style.background = 'conic-gradient(#2ecc71 0deg 28.8deg, #3498db 28.8deg 64.8deg, #f39c12 64.8deg 165.6deg, #e74c3c 165.6deg 360deg)';
   wheel.innerHTML = '';
-  
   document.getElementById('wheelGrade').textContent = '2';
   document.getElementById('wheelResult').textContent = '';
   document.getElementById('spinBtn').classList.remove('hidden');
@@ -1079,147 +502,67 @@ function initWheel() {
 document.getElementById('spinBtn').addEventListener('click', () => {
   if (wheelSpun) return;
   wheelSpun = true;
-  
   const wheel = document.getElementById('wheel');
   const rand = Math.random() * 100;
   let result, rotation;
-  
-  if (rand < 8) {
-    result = 5;
-    rotation = 360 * 5 + 14.4;
-  } else if (rand < 18) {
-    result = 4;
-    rotation = 360 * 5 + 46.8;
-  } else if (rand < 46) {
-    result = 3;
-    rotation = 360 * 5 + 115.2;
-  } else {
-    result = 2;
-    rotation = 360 * 5 + 262.8;
-  }
+  if (rand < 8) { result = 5; rotation = 360 * 5 + 14.4; }
+  else if (rand < 25) { result = 4; rotation = 360 * 5 + 46.8; }
+  else if (rand < 53) { result = 3; rotation = 360 * 5 + 115.2; }
+  else { result = 2; rotation = 360 * 5 + 262.8; }
   
   wheel.style.transform = `rotate(-${rotation}deg)`;
   
   setTimeout(() => {
     const resultText = result === 5 ? '🎉 ОТЛИЧНО!' : result === 4 ? '👍 ХОРОШО!' : result === 3 ? '✅ УДОВЛ.' : '📚 ПЕРЕСДАЧА';
     const resultColor = result === 5 ? '#2ecc71' : result === 4 ? '#3498db' : result === 3 ? '#f39c12' : '#e74c3c';
-    document.getElementById('wheelResult').innerHTML = `
-      <div class="wheel-result">
-        ОЦЕНКА: <span style="color: ${resultColor}; font-size: 4rem;">${result}</span><br>
-        ${resultText}
-      </div>`;
+    document.getElementById('wheelResult').innerHTML = `<div class="wheel-result">ОЦЕНКА: <span style="color:${resultColor};font-size:2.5rem;">${result}</span><br>${resultText}</div>`;
     document.getElementById('spinBtn').classList.add('hidden');
     document.getElementById('finishBtn').classList.remove('hidden');
-    
     document.getElementById('finishBtn').onclick = () => {
       wheelScreen.classList.add('hidden');
       gameScreen.classList.remove('hidden');
+      gameScreen.style.display = 'flex';
       renderFinalSlideWithGrade(result);
     };
   }, 4000);
 });
 
 function renderFinalSlideWithGrade(newGrade) {
-  let gradeText = newGrade === 5 ? '5 (отлично)' : newGrade === 4 ? '4 (хорошо)' : newGrade === 3 ? '3 (удовл.)' : '2 (неуд.)';
   const container = document.getElementById('slideContainer');
-  container.innerHTML = `<div class="final-score">
-    <h2>🏁 ИТОГОВАЯ ОЦЕНКА</h2>
-    <div style="font-size:5rem; color: ${newGrade >= 3 ? '#2ecc71' : '#e74c3c'};">${newGrade}</div>
-    <div>${gradeText}</div>
-    <button class="btn" onclick="location.reload()">🔄 НАЧАТЬ ЗАНОВО</button>
-  </div>`;
+  container.innerHTML = `<div class="final-score"><h2>🏁 ИТОГ</h2>
+  <div style="font-size:3.5rem;color:${newGrade>=3?'#2ecc71':'#e74c3c'}">${newGrade}</div>
+  <div>${newGrade===5?'5 (отлично)':newGrade===4?'4 (хорошо)':newGrade===3?'3 (удовл.)':'2 (неуд.)'}</div>
+  <button class="btn" onclick="location.reload()" style="margin-top:15px;">🔄 ЗАНОВО</button></div>`;
 }
 
-// ---------- АНТИ-ЧИТ: ДЕТЕКТОР ПЕРЕКЛЮЧЕНИЯ ВКЛАДОК ----------
+// ========== ANTI-CHEAT ==========
 let cheatDetected = false;
-
 document.addEventListener('visibilitychange', () => {
-  // Если тест ещё не закончен и вкладку скрыли
-  if (document.hidden && !testFinished && currentSlide < totalQuestions + exercises.length) {
-    if (!cheatDetected) {
-      cheatDetected = true;
-      
-      // Забираем все жизни
-      lives = 0;
-      updateHearts();
-      
-      // Показываем уведомление
-      showCheatWarning();
-      
-      // Завершаем тест
-      testFinished = true;
-      
-      // Переходим к финалу через 1.5 секунды
-      setTimeout(() => {
-        currentSlide = totalQuestions + exercises.length;
-        renderSlide();
-      }, 1500);
-    }
+  if (document.hidden && !testFinished && currentSlide < totalQuestions + exercises.length && !cheatDetected) {
+    cheatDetected = true;
+    lives = 0;
+    updateHearts();
+    showFloatingText("⚠️ ВКЛАДКА! ТЕСТ ЗАВЕРШЁН", "#e74c3c");
+    testFinished = true;
+    setTimeout(() => { currentSlide = totalQuestions + exercises.length; renderSlide(); }, 1500);
   }
 });
 
-function showCheatWarning() {
-  const warning = document.createElement('div');
-  warning.style.cssText = `
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: linear-gradient(135deg, #c0392b, #e74c3c);
-    color: white;
-    padding: 40px 60px;
-    border-radius: 30px;
-    font-size: 1.8rem;
-    font-weight: 700;
-    text-align: center;
-    z-index: 9999;
-    box-shadow: 0 0 100px rgba(231, 76, 60, 0.8);
-    animation: cheatPulse 0.5s ease-out;
-  `;
-  warning.innerHTML = `
-    ⚠️ ОБНАРУЖЕНО ПЕРЕКЛЮЧЕНИЕ ВКЛАДКИ!<br>
-    <span style="font-size:1.2rem; font-weight:400; margin-top:15px; display:block;">Все жизни потеряны. Тест завершён.</span>
-  `;
-  document.body.appendChild(warning);
-  
-  setTimeout(() => warning.remove(), 2000);
-}
-
-// Дополнительно: блокировка контекстного меню (правая кнопка мыши)
 document.addEventListener('contextmenu', (e) => {
   if (!testFinished && currentSlide < totalQuestions + exercises.length) {
     e.preventDefault();
-    showFloatingText("🚫 Контекстное меню заблокировано", "#e74c3c");
+    showFloatingText("🚫 Меню заблокировано", "#e74c3c");
   }
 });
 
-// Дополнительно: блокировка некоторых горячих клавиш (F12, Ctrl+C, Ctrl+V)
 document.addEventListener('keydown', (e) => {
   if (!testFinished && currentSlide < totalQuestions + exercises.length) {
-    // F12
-    if (e.key === 'F12') {
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'c') || (e.ctrlKey && e.key === 'v')) {
       e.preventDefault();
-      showFloatingText("🚫 F12 заблокирована", "#e74c3c");
-    }
-    // Ctrl+Shift+I (DevTools)
-    if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-      e.preventDefault();
-      showFloatingText("🚫 DevTools заблокирован", "#e74c3c");
-    }
-    // Ctrl+C (копировать)
-    if (e.ctrlKey && e.key === 'c') {
-      e.preventDefault();
-      showFloatingText("🚫 Копирование заблокировано", "#e74c3c");
-    }
-    // Ctrl+V (вставить)
-    if (e.ctrlKey && e.key === 'v') {
-      e.preventDefault();
-      showFloatingText("🚫 Вставка заблокирована", "#e74c3c");
+      showFloatingText("🚫 Заблокировано", "#e74c3c");
     }
   }
 });
-
-// Инициализация
 })();
 </script>
 </body>
